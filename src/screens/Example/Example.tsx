@@ -59,7 +59,7 @@ function Example() {
 
           <View style={[layout.absolute, gutters.paddingTop_80]}>
             <AssetByVariant
-              path={'tom'}
+              path={'ampa'}
               resizeMode={'contain'}
               style={{ height: 300, width: 300 }}
             />

@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "344646446850",
+    "project_id": "loyapp-391e6",
+    "storage_bucket": "loyapp-391e6.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:344646446850:android:68ade6e617ae66c18e5c1b",
+        "android_client_info": {
+          "package_name": "com.loyapp"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBpCjFbJRPQgHCInTHuzv2ykkdmytisDII"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

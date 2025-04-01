@@ -10,6 +10,7 @@ import { Paths } from '@/navigation/paths';
 
 import { AssetByVariant } from '@/components/atoms';
 import { SafeScreen } from '@/components/templates';
+import { initSynerise } from '@/services/synerise';
 
 function Startup({ navigation }: RootScreenProps<Paths.Startup>) {
   const { fonts, gutters, layout } = useTheme();
@@ -23,10 +24,13 @@ function Startup({ navigation }: RootScreenProps<Paths.Startup>) {
   });
 
   useEffect(() => {
+    
+    initSynerise();
+
     if (isSuccess) {
       navigation.reset({
         index: 0,
-        routes: [{ name: Paths.Tabs }],
+        routes: [{ name: Paths.Example }],
       });
     }
   }, [isSuccess, navigation]);
@@ -42,7 +46,7 @@ function Startup({ navigation }: RootScreenProps<Paths.Startup>) {
         ]}
       >
         <AssetByVariant
-          path={'tom'}
+          path={'ampa'}
           resizeMode={'contain'}
           style={{ height: 300, width: 300 }}
         />

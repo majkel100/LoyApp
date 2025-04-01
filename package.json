@@ -17,6 +17,8 @@
     "postinstall": "npx patch-package"
   },
   "dependencies": {
+    "@react-native-firebase/app": "^21.13.0",
+    "@react-native-firebase/messaging": "^21.13.0",
     "@react-native-masked-view/masked-view": "^0.3.1",
     "@react-navigation/bottom-tabs": "^6.6.1",
     "@react-navigation/native": "^6.1.18",

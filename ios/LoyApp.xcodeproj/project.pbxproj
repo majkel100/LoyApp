@@ -8,12 +8,12 @@
 
 /* Begin PBXBuildFile section */
 		00E356F31AD99517003FC87E /* LoyAppTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* LoyAppTests.m */; };
+		09925B2080D7746801410216 /* libPods-LoyApp.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 961E60C60DDDB7484AE99F78 /* libPods-LoyApp.a */; };
 		13B07FBC1A68108700A75B9A /* AppDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.mm */; };
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
-		6A8B8815E2DB418E7A9ADB40 /* libPods-LoyApp.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 41F925D6E74036F703711B79 /* libPods-LoyApp.a */; };
-		7082F40EB17F3004BEB57E53 /* libPods-LoyApp-LoyAppTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 9F569F51895253125097E7A3 /* libPods-LoyApp-LoyAppTests.a */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
+		BAA260AFB7637A8B0E6AD1E9 /* libPods-LoyApp-LoyAppTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5D0DFB6CD2E41D9E0B38C21A /* libPods-LoyApp-LoyAppTests.a */; };
 		F571B3882BD7A3F80014213C /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = F571B3872BD7A3F80014213C /* PrivacyInfo.xcprivacy */; };
 /* End PBXBuildFile section */
 
@@ -31,19 +31,19 @@
 		00E356EE1AD99517003FC87E /* LoyAppTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = LoyAppTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		00E356F11AD99517003FC87E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		00E356F21AD99517003FC87E /* LoyAppTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LoyAppTests.m; sourceTree = "<group>"; };
-		123CE870962A5F52DEB959B2 /* Pods-LoyApp.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LoyApp.release.xcconfig"; path = "Target Support Files/Pods-LoyApp/Pods-LoyApp.release.xcconfig"; sourceTree = "<group>"; };
 		13B07F961A680F5B00A75B9A /* LoyApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = LoyApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		13B07FAF1A68108700A75B9A /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AppDelegate.h; path = LoyApp/AppDelegate.h; sourceTree = "<group>"; };
 		13B07FB01A68108700A75B9A /* AppDelegate.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = AppDelegate.mm; path = LoyApp/AppDelegate.mm; sourceTree = "<group>"; };
 		13B07FB51A68108700A75B9A /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = LoyApp/Images.xcassets; sourceTree = "<group>"; };
 		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = LoyApp/Info.plist; sourceTree = "<group>"; };
 		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = LoyApp/main.m; sourceTree = "<group>"; };
-		1E46634A0A68D4D5587E1986 /* Pods-LoyApp-LoyAppTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LoyApp-LoyAppTests.debug.xcconfig"; path = "Target Support Files/Pods-LoyApp-LoyAppTests/Pods-LoyApp-LoyAppTests.debug.xcconfig"; sourceTree = "<group>"; };
-		34625E75AEE813A48E176AF9 /* Pods-LoyApp.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LoyApp.debug.xcconfig"; path = "Target Support Files/Pods-LoyApp/Pods-LoyApp.debug.xcconfig"; sourceTree = "<group>"; };
-		3BFC38D7D40F2117A89694A3 /* Pods-LoyApp-LoyAppTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LoyApp-LoyAppTests.release.xcconfig"; path = "Target Support Files/Pods-LoyApp-LoyAppTests/Pods-LoyApp-LoyAppTests.release.xcconfig"; sourceTree = "<group>"; };
-		41F925D6E74036F703711B79 /* libPods-LoyApp.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-LoyApp.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		2E332EB93142D6C1C86FBAE3 /* Pods-LoyApp-LoyAppTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LoyApp-LoyAppTests.release.xcconfig"; path = "Target Support Files/Pods-LoyApp-LoyAppTests/Pods-LoyApp-LoyAppTests.release.xcconfig"; sourceTree = "<group>"; };
+		5D0DFB6CD2E41D9E0B38C21A /* libPods-LoyApp-LoyAppTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-LoyApp-LoyAppTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		7545BBABCAFCFE783E368CE8 /* Pods-LoyApp.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LoyApp.debug.xcconfig"; path = "Target Support Files/Pods-LoyApp/Pods-LoyApp.debug.xcconfig"; sourceTree = "<group>"; };
 		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = LoyApp/LaunchScreen.storyboard; sourceTree = "<group>"; };
-		9F569F51895253125097E7A3 /* libPods-LoyApp-LoyAppTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-LoyApp-LoyAppTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		884CAA94A60291706940E15C /* Pods-LoyApp.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LoyApp.release.xcconfig"; path = "Target Support Files/Pods-LoyApp/Pods-LoyApp.release.xcconfig"; sourceTree = "<group>"; };
+		961E60C60DDDB7484AE99F78 /* libPods-LoyApp.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-LoyApp.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		B6750FDB0674B2B8D06F5DD1 /* Pods-LoyApp-LoyAppTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LoyApp-LoyAppTests.debug.xcconfig"; path = "Target Support Files/Pods-LoyApp-LoyAppTests/Pods-LoyApp-LoyAppTests.debug.xcconfig"; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 		F571B3872BD7A3F80014213C /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -53,7 +53,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				7082F40EB17F3004BEB57E53 /* libPods-LoyApp-LoyAppTests.a in Frameworks */,
+				BAA260AFB7637A8B0E6AD1E9 /* libPods-LoyApp-LoyAppTests.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -61,7 +61,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				6A8B8815E2DB418E7A9ADB40 /* libPods-LoyApp.a in Frameworks */,
+				09925B2080D7746801410216 /* libPods-LoyApp.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -103,8 +103,8 @@
 			isa = PBXGroup;
 			children = (
 				ED297162215061F000B7C4FE /* JavaScriptCore.framework */,
-				41F925D6E74036F703711B79 /* libPods-LoyApp.a */,
-				9F569F51895253125097E7A3 /* libPods-LoyApp-LoyAppTests.a */,
+				961E60C60DDDB7484AE99F78 /* libPods-LoyApp.a */,
+				5D0DFB6CD2E41D9E0B38C21A /* libPods-LoyApp-LoyAppTests.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -143,10 +143,10 @@
 		BBD78D7AC51CEA395F1C20DB /* Pods */ = {
 			isa = PBXGroup;
 			children = (
-				34625E75AEE813A48E176AF9 /* Pods-LoyApp.debug.xcconfig */,
-				123CE870962A5F52DEB959B2 /* Pods-LoyApp.release.xcconfig */,
-				1E46634A0A68D4D5587E1986 /* Pods-LoyApp-LoyAppTests.debug.xcconfig */,
-				3BFC38D7D40F2117A89694A3 /* Pods-LoyApp-LoyAppTests.release.xcconfig */,
+				7545BBABCAFCFE783E368CE8 /* Pods-LoyApp.debug.xcconfig */,
+				884CAA94A60291706940E15C /* Pods-LoyApp.release.xcconfig */,
+				B6750FDB0674B2B8D06F5DD1 /* Pods-LoyApp-LoyAppTests.debug.xcconfig */,
+				2E332EB93142D6C1C86FBAE3 /* Pods-LoyApp-LoyAppTests.release.xcconfig */,
 			);
 			path = Pods;
 			sourceTree = "<group>";
@@ -158,12 +158,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 00E357021AD99517003FC87E /* Build configuration list for PBXNativeTarget "LoyAppTests" */;
 			buildPhases = (
-				B65D8C17718DEF461EE316EF /* [CP] Check Pods Manifest.lock */,
+				73302A6C9270572125AFD70D /* [CP] Check Pods Manifest.lock */,
 				00E356EA1AD99517003FC87E /* Sources */,
 				00E356EB1AD99517003FC87E /* Frameworks */,
 				00E356EC1AD99517003FC87E /* Resources */,
-				93DA718FB05BF2AF340302FC /* [CP] Embed Pods Frameworks */,
-				732E6C8759D5B5A430C53FE0 /* [CP] Copy Pods Resources */,
+				F5E9762914E57DAFC2B913D5 /* [CP] Embed Pods Frameworks */,
+				5B760432C7178B8C3BADD989 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -179,14 +179,14 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 13B07F931A680F5B00A75B9A /* Build configuration list for PBXNativeTarget "LoyApp" */;
 			buildPhases = (
-				FF91D502BB80610F448F21D9 /* [CP] Check Pods Manifest.lock */,
+				5F768BF726D61A17417F3F77 /* [CP] Check Pods Manifest.lock */,
 				FD10A7F022414F080027D42C /* Start Packager */,
 				13B07F871A680F5B00A75B9A /* Sources */,
 				13B07F8C1A680F5B00A75B9A /* Frameworks */,
 				13B07F8E1A680F5B00A75B9A /* Resources */,
 				00DD1BFF1BD5951E006B06BC /* Bundle React Native code and images */,
-				B62916F824A540865C895387 /* [CP] Embed Pods Frameworks */,
-				747394660BF9D714835DF373 /* [CP] Copy Pods Resources */,
+				2B872A95164B868CBBF40DBC /* [CP] Embed Pods Frameworks */,
+				A06A044572D261D989DC1577 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -270,58 +270,7 @@
 			shellPath = /bin/sh;
 			shellScript = "set -e\n\nWITH_ENVIRONMENT=\"../node_modules/react-native/scripts/xcode/with-environment.sh\"\nREACT_NATIVE_XCODE=\"../node_modules/react-native/scripts/react-native-xcode.sh\"\n\n/bin/sh -c \"$WITH_ENVIRONMENT $REACT_NATIVE_XCODE\"\n";
 		};
-		732E6C8759D5B5A430C53FE0 /* [CP] Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-LoyApp-LoyAppTests/Pods-LoyApp-LoyAppTests-resources-${CONFIGURATION}-input-files.xcfilelist",
-			);
-			name = "[CP] Copy Pods Resources";
-			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-LoyApp-LoyAppTests/Pods-LoyApp-LoyAppTests-resources-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-LoyApp-LoyAppTests/Pods-LoyApp-LoyAppTests-resources.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		747394660BF9D714835DF373 /* [CP] Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-LoyApp/Pods-LoyApp-resources-${CONFIGURATION}-input-files.xcfilelist",
-			);
-			name = "[CP] Copy Pods Resources";
-			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-LoyApp/Pods-LoyApp-resources-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-LoyApp/Pods-LoyApp-resources.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		93DA718FB05BF2AF340302FC /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-LoyApp-LoyAppTests/Pods-LoyApp-LoyAppTests-frameworks-${CONFIGURATION}-input-files.xcfilelist",
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-LoyApp-LoyAppTests/Pods-LoyApp-LoyAppTests-frameworks-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-LoyApp-LoyAppTests/Pods-LoyApp-LoyAppTests-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		B62916F824A540865C895387 /* [CP] Embed Pods Frameworks */ = {
+		2B872A95164B868CBBF40DBC /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -338,7 +287,46 @@
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-LoyApp/Pods-LoyApp-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		B65D8C17718DEF461EE316EF /* [CP] Check Pods Manifest.lock */ = {
+		5B760432C7178B8C3BADD989 /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-LoyApp-LoyAppTests/Pods-LoyApp-LoyAppTests-resources-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Copy Pods Resources";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-LoyApp-LoyAppTests/Pods-LoyApp-LoyAppTests-resources-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-LoyApp-LoyAppTests/Pods-LoyApp-LoyAppTests-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		5F768BF726D61A17417F3F77 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-LoyApp-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		73302A6C9270572125AFD70D /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -360,6 +348,40 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
+		A06A044572D261D989DC1577 /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-LoyApp/Pods-LoyApp-resources-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Copy Pods Resources";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-LoyApp/Pods-LoyApp-resources-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-LoyApp/Pods-LoyApp-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		F5E9762914E57DAFC2B913D5 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-LoyApp-LoyAppTests/Pods-LoyApp-LoyAppTests-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-LoyApp-LoyAppTests/Pods-LoyApp-LoyAppTests-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-LoyApp-LoyAppTests/Pods-LoyApp-LoyAppTests-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
 		FD10A7F022414F080027D42C /* Start Packager */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -377,28 +399,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "export RCT_METRO_PORT=\"${RCT_METRO_PORT:=8081}\"\necho \"export RCT_METRO_PORT=${RCT_METRO_PORT}\" > \"${SRCROOT}/../node_modules/react-native/scripts/.packager.env\"\nif [ -z \"${RCT_NO_LAUNCH_PACKAGER+xxx}\" ] ; then\n  if nc -w 5 -z localhost ${RCT_METRO_PORT} ; then\n    if ! curl -s \"http://localhost:${RCT_METRO_PORT}/status\" | grep -q \"packager-status:running\" ; then\n      echo \"Port ${RCT_METRO_PORT} already in use, packager is either not running or not running correctly\"\n      exit 2\n    fi\n  else\n    open \"$SRCROOT/../node_modules/react-native/scripts/launchPackager.command\" || echo \"Can't start packager automatically\"\n  fi\nfi\n";
-			showEnvVarsInLog = 0;
-		};
-		FF91D502BB80610F448F21D9 /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
-				"${PODS_ROOT}/Manifest.lock",
-			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-LoyApp-checkManifestLockResult.txt",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
@@ -434,7 +434,7 @@
 /* Begin XCBuildConfiguration section */
 		00E356F61AD99517003FC87E /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 1E46634A0A68D4D5587E1986 /* Pods-LoyApp-LoyAppTests.debug.xcconfig */;
+			baseConfigurationReference = B6750FDB0674B2B8D06F5DD1 /* Pods-LoyApp-LoyAppTests.debug.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				GCC_PREPROCESSOR_DEFINITIONS = (
@@ -461,7 +461,7 @@
 		};
 		00E356F71AD99517003FC87E /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 3BFC38D7D40F2117A89694A3 /* Pods-LoyApp-LoyAppTests.release.xcconfig */;
+			baseConfigurationReference = 2E332EB93142D6C1C86FBAE3 /* Pods-LoyApp-LoyAppTests.release.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				COPY_PHASE_STRIP = NO;
@@ -485,7 +485,7 @@
 		};
 		13B07F941A680F5B00A75B9A /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 34625E75AEE813A48E176AF9 /* Pods-LoyApp.debug.xcconfig */;
+			baseConfigurationReference = 7545BBABCAFCFE783E368CE8 /* Pods-LoyApp.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
@@ -514,7 +514,7 @@
 		};
 		13B07F951A680F5B00A75B9A /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 123CE870962A5F52DEB959B2 /* Pods-LoyApp.release.xcconfig */;
+			baseConfigurationReference = 884CAA94A60291706940E15C /* Pods-LoyApp.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;

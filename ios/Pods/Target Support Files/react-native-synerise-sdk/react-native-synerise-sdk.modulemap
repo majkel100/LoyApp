@@ -1,0 +1,6 @@
+framework module react_native_synerise_sdk {
+  umbrella header "react-native-synerise-sdk-umbrella.h"
+
+  export *
+  module * { export * }
+}

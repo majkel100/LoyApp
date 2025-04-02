@@ -1,0 +1,11 @@
+framework module SyneriseSDK {
+  umbrella header "SyneriseSDK.h"
+  export *
+
+  module * { export * }
+}
+
+module SyneriseSDK.Swift {
+  header "SyneriseSDK-Swift.h"
+  requires objc
+}

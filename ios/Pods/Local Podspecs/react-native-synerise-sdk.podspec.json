@@ -1,0 +1,28 @@
+{
+  "name": "react-native-synerise-sdk",
+  "version": "1.0.1",
+  "summary": "React Native wrapper for Synerise SDK",
+  "homepage": "https://synerise.com",
+  "license": {
+    "type": "Apache License 2.0",
+    "file": "LICENSE"
+  },
+  "authors": {
+    "Synerise": "developer@synerise.com"
+  },
+  "platforms": {
+    "ios": "13.0"
+  },
+  "source": {
+    "git": "https://github.com/Synerise/react-native-synerise-sdk",
+    "tag": "1.0.1"
+  },
+  "source_files": "ios/ReactNativeSynerise/**/*.{h,m}",
+  "requires_arc": true,
+  "dependencies": {
+    "React": [],
+    "SyneriseSDK": [
+      "5.0.6"
+    ]
+  }
+}

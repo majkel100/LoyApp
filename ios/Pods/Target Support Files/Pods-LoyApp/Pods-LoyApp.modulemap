@@ -1,0 +1,6 @@
+framework module Pods_LoyApp {
+  umbrella header "Pods-LoyApp-umbrella.h"
+
+  export *
+  module * { export * }
+}

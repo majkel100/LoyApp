@@ -1,7 +1,10 @@
-
 import messaging from '@react-native-firebase/messaging';
 import { Platform, PermissionsAndroid } from 'react-native';
 
+// Obsługa wiadomości w tle
+messaging().setBackgroundMessageHandler(async remoteMessage => {
+  console.log('Otrzymano wiadomość w tle:', remoteMessage);
+});
 
 async function requestUserPermission() {
     if (Platform.OS === 'android') {

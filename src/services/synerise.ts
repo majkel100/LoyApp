@@ -1,13 +1,132 @@
 import { Synerise } from 'react-native-synerise-sdk';
+import { Platform } from 'react-native';
 
-export const initSynerise = () => {
-  Synerise.Initializer()
-    .withApiKey('6d3d6a1d-64bb-44d0-8048-b12eafc63426')
-    .withDebugModeEnabled(false)
-    .withCrashHandlingEnabled(true)
-    .init();
+// Flaga do śledzenia stanu inicjalizacji Synerise
+let isSyneriseInitialized = false;
+
+// Stałe Synerise
+const SYNERISE_API_KEY = '6d3d6a1d-64bb-44d0-8048-b12eafc63426';
+const DEBUG_MODE = true;
+
+/**
+ * Sprawdza, czy Synerise jest już zainicjalizowany
+ */
+export const isSyneriseAlreadyInitialized = () => {
+  return isSyneriseInitialized;
 };
 
+/**
+ * Inicjalizuje Synerise SDK
+ * @returns Promise rozwiązywana po inicjalizacji
+ */
+export const initSyneriseSDK = () => {
+  // Jeśli Synerise jest już zainicjalizowany, nie inicjalizuj ponownie
+  if (isSyneriseInitialized) {
+    console.log('Synerise już zainicjalizowany, pomijam ponowną inicjalizację');
+    return Promise.resolve();
+  }
+
+  return new Promise<void>((resolve) => {
+    try {
+      // Przygotowanie inicjalizacji Synerise z dodatkowymi parametrami dla powiadomień
+      const initializer = Synerise.Initializer()
+        .withApiKey(SYNERISE_API_KEY)
+        .withDebugModeEnabled(DEBUG_MODE)
+        .withCrashHandlingEnabled(true);
+      
+      // Dodatkowa konfiguracja dla iOS/Android dla powiadomień
+      if (Platform.OS === 'ios') {
+        // Na iOS można dodać dodatkowe konfiguracje, jeśli będą potrzebne
+      }
+
+      // Inicjalizacja z rozszerzoną konfiguracją
+      initializer.init();
+      
+      // Oznacz Synerise jako zainicjalizowany
+      isSyneriseInitialized = true;
+      console.log('Synerise został pomyślnie zainicjalizowany');
+      resolve();
+    } catch (error) {
+      console.error('Błąd podczas inicjalizacji Synerise:', error);
+      resolve(); // Rozwiązujemy obietnicę mimo błędu, aby aplikacja mogła działać dalej
+    }
+  });
+};
+
+/**
+ * Inicjalizuje Synerise i wykonuje funkcję po jego pełnej gotowości
+ * @param callback Funkcja do wykonania po inicjalizacji
+ */
+export const initSyneriseWithCallback = (callback?: () => void) => {
+  // Jeśli Synerise jest już zainicjalizowany, wykonaj callback od razu
+  if (isSyneriseInitialized) {
+    console.log('Synerise już zainicjalizowany, wykonuję callback');
+    if (callback) callback();
+    return Promise.resolve();
+  }
+
+  return new Promise<void>((resolve) => {
+    // Inicjalizuj Synerise
+    initSyneriseSDK().then(() => {
+      // Dodatkowe sprawdzenie, czy Synerise jest gotowy
+      Synerise.onReady(() => {
+        console.log('Synerise jest w pełni gotowy');
+        if (callback) callback();
+        resolve();
+      });
+    });
+  });
+};
+
+/**
+ * Obsługuje powiadomienie Synerise
+ * @param pushData Dane powiadomienia
+ * @returns Promise 
+ */
+export const handleSynerisePushNotification = async (pushData: any) => {
+  if (!pushData) {
+    console.warn('Brak danych powiadomienia do obsługi');
+    return Promise.resolve();
+  }
+
+  return new Promise<void>((resolve, reject) => {
+    try {
+      // Jeśli Synerise nie jest zainicjalizowany, inicjalizuj go najpierw
+      if (!isSyneriseInitialized) {
+        console.log('Inicjalizuję Synerise przed obsługą powiadomienia');
+        
+        initSyneriseWithCallback(() => {
+          try {
+            if (Synerise && Synerise.Notifications) {
+              Synerise.Notifications.handleNotification(pushData, null);
+              console.log('Powiadomienie Synerise obsłużone po inicjalizacji');
+              resolve();
+            } else {
+              console.error('Moduł Notifications niedostępny po inicjalizacji');
+              reject(new Error('Moduł Notifications niedostępny'));
+            }
+          } catch (innerError) {
+            console.error('Błąd podczas obsługi powiadomienia po inicjalizacji:', innerError);
+            reject(innerError);
+          }
+        });
+      } else {
+        // Synerise już zainicjalizowany, obsłuż powiadomienie bezpośrednio
+        Synerise.Notifications.handleNotification(pushData, null);
+        console.log('Powiadomienie Synerise obsłużone bezpośrednio');
+        resolve();
+      }
+    } catch (error) {
+      console.error('Błąd podczas obsługi powiadomienia Synerise:', error);
+      reject(error);
+    }
+  });
+};
+
+// Eksport domyślny wszystkich funkcji
 export default {
-  initSynerise,
+  isSyneriseAlreadyInitialized,
+  initSyneriseSDK,
+  initSyneriseWithCallback,
+  handleSynerisePushNotification
 }; 

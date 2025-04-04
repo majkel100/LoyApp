@@ -10,23 +10,26 @@ import { Paths } from '@/navigation/paths';
 
 import { AssetByVariant } from '@/components/atoms';
 import { SafeScreen } from '@/components/templates';
-import { initSynerise } from '@/services/synerise';
+import { initSyneriseWithCallback } from '@/services/synerise';
+import { initFcmAndRegisterWithSynerise } from '@/services/fcm';
 
 function Startup({ navigation }: RootScreenProps<Paths.Startup>) {
   const { fonts, gutters, layout } = useTheme();
   const { t } = useTranslation();
 
   const { isError, isFetching, isSuccess } = useQuery({
-    queryFn: () => {
+    queryFn: async () => {
+      // Inicjalizacja Synerise i FCM podczas uruchamiania aplikacji
+      await initSyneriseWithCallback(async () => {
+        // Po pełnej inicjalizacji Synerise, zainicjalizuj FCM
+        await initFcmAndRegisterWithSynerise();
+      });
       return Promise.resolve(true);
     },
     queryKey: ['startup'],
   });
 
   useEffect(() => {
-    
-    initSynerise();
-
     if (isSuccess) {
       navigation.reset({
         index: 0,

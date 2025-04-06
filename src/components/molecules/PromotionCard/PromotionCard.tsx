@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { useTheme } from '@/theme';
+import { QRCodeDrawer } from '@/components/molecules';
 
 // Interfejs dla danych promocji
 export interface PromotionItem {
@@ -24,6 +25,7 @@ interface PromotionCardProps {
 
 const PromotionCard = ({ promotion, userPoints = '0', onRedeem }: PromotionCardProps) => {
   const { colors, fonts, gutters, layout, variant } = useTheme();
+  const [qrDrawerVisible, setQrDrawerVisible] = useState(false);
 
   // Pobierz URL obrazu z obrazów typu 'thumbnail'
   const imageUrl = promotion.images?.find(img => img.type === 'thumbnail')?.url;
@@ -56,84 +58,95 @@ const PromotionCard = ({ promotion, userPoints = '0', onRedeem }: PromotionCardP
     : `Brakuje Ci jeszcze ${pointsLeft} punktów`;
 
   const handleRedeem = () => {
-    if (onRedeem && isComplete) {
-      onRedeem(promotion.uuid);
+    if (isComplete) {
+      setQrDrawerVisible(true);
+      if (onRedeem) {
+        onRedeem(promotion.uuid);
+      }
     }
   };
 
   return (
-    <View
-      style={[
-        styles.container,
-        { backgroundColor: cardBackgroundColor },
-        gutters.marginBottom_16,
-      ]}
-    >
-      {imageUrl ? (
-        <Image source={{ uri: imageUrl }} style={styles.image} />
-      ) : (
-        <View style={[styles.imagePlaceholder, { backgroundColor: colors.gray100 }]} />
-      )}
-      <View 
+    <>
+      <View
         style={[
-          styles.contentContainer,
-          { backgroundColor: contentBackgroundColor },
-          gutters.padding_16
+          styles.container,
+          { backgroundColor: cardBackgroundColor },
+          gutters.marginBottom_16,
         ]}
       >
-        <Text style={[fonts.size_16, fonts.bold, { color: textNameColor }]}>
-          {promotion.name || 'Bez nazwy'}
-        </Text>
-        <View style={[layout.row, layout.itemsCenter, layout.justifyBetween, gutters.marginTop_16]}>
-          <View style={[styles.pointsContainer, { backgroundColor: isDarkMode ? '#44427D' : '#E1E1EF' }]}>
-            <Text style={[fonts.size_16, fonts.bold, { color: textPointsColor }]}>
-              {promotion.requireRedeemedPoints} punktów
-            </Text>
+        {imageUrl ? (
+          <Image source={{ uri: imageUrl }} style={styles.image} />
+        ) : (
+          <View style={[styles.imagePlaceholder, { backgroundColor: colors.gray100 }]} />
+        )}
+        <View 
+          style={[
+            styles.contentContainer,
+            { backgroundColor: contentBackgroundColor },
+            gutters.padding_16
+          ]}
+        >
+          <Text style={[fonts.size_16, fonts.bold, { color: textNameColor }]}>
+            {promotion.name || 'Bez nazwy'}
+          </Text>
+          <View style={[layout.row, layout.itemsCenter, layout.justifyBetween, gutters.marginTop_16]}>
+            <View style={[styles.pointsContainer, { backgroundColor: isDarkMode ? '#44427D' : '#E1E1EF' }]}>
+              <Text style={[fonts.size_16, fonts.bold, { color: textPointsColor }]}>
+                {promotion.requireRedeemedPoints} punktów
+              </Text>
+            </View>
+            
+            {isComplete && (
+              <TouchableOpacity 
+                style={[
+                  styles.buttonContainer, 
+                  { backgroundColor: progressBarFilledColor }
+                ]} 
+                onPress={handleRedeem}
+              >
+                <Text style={[fonts.size_16, fonts.bold, { color: '#FFFFFF' }]}>
+                  Wykorzystaj
+                </Text>
+              </TouchableOpacity>
+            )}
           </View>
           
-          {isComplete && (
-            <TouchableOpacity 
+          {/* Pasek postępu */}
+          <View style={[styles.progressBarContainer, gutters.marginTop_16]}>
+            <View style={[
+              styles.progressBarBackground,
+              { backgroundColor: progressBarBackgroundColor }
+            ]}>
+              <View 
+                style={[
+                  styles.progressBarFilled,
+                  { 
+                    backgroundColor: progressBarFilledColor,
+                    width: `${progressPercentage}%`
+                  }
+                ]}
+              />
+            </View>
+            <Text 
               style={[
-                styles.buttonContainer, 
-                { backgroundColor: progressBarFilledColor }
-              ]} 
-              onPress={handleRedeem}
-            >
-              <Text style={[fonts.size_16, fonts.bold, { color: '#FFFFFF' }]}>
-                Wykorzystaj
-              </Text>
-            </TouchableOpacity>
-          )}
-        </View>
-        
-        {/* Pasek postępu */}
-        <View style={[styles.progressBarContainer, gutters.marginTop_16]}>
-          <View style={[
-            styles.progressBarBackground,
-            { backgroundColor: progressBarBackgroundColor }
-          ]}>
-            <View 
-              style={[
-                styles.progressBarFilled,
-                { 
-                  backgroundColor: progressBarFilledColor,
-                  width: `${progressPercentage}%`
-                }
+                fonts.size_12, 
+                gutters.marginTop_12, 
+                { color: isComplete ? progressBarFilledColor : textHeadlineColor }
               ]}
-            />
+            >
+              {progressStatusText}
+            </Text>
           </View>
-          <Text 
-            style={[
-              fonts.size_12, 
-              gutters.marginTop_12, 
-              { color: isComplete ? progressBarFilledColor : textHeadlineColor }
-            ]}
-          >
-            {progressStatusText}
-          </Text>
         </View>
       </View>
-    </View>
+
+      <QRCodeDrawer 
+        isVisible={qrDrawerVisible}
+        onClose={() => setQrDrawerVisible(false)}
+        promotionId={promotion.uuid}
+      />
+    </>
   );
 };
 

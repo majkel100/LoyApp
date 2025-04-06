@@ -93,7 +93,17 @@ const CustomerCard = ({ customerData, isLoading = false }: CustomerCardProps) =>
             numberOfLines={1}
             adjustsFontSizeToFit
           >
-            {greeting}
+            {customerData?.firstName ? (
+              <>
+                <Text style={{ color: textPointsColor }}>Hej,</Text>
+                <Text> {customerData.firstName}!</Text>
+              </>
+            ) : (
+              <>
+                <Text style={{ color: textPointsColor }}>Hej</Text>
+                <Text>!</Text>
+              </>
+            )}
           </Text>
           <View style={[styles.pointsContainer, { backgroundColor: pointsBackgroundColor }]}>
             <Text 

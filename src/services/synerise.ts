@@ -1,5 +1,6 @@
 import { Synerise } from 'react-native-synerise-sdk';
 import { Platform } from 'react-native';
+import { PromotionItem } from '@/components/molecules/PromotionCard';
 
 // Flaga do śledzenia stanu inicjalizacji Synerise
 let isSyneriseInitialized = false;
@@ -7,6 +8,11 @@ let isSyneriseInitialized = false;
 // Stałe Synerise
 const SYNERISE_API_KEY = '6d3d6a1d-64bb-44d0-8048-b12eafc63426';
 const DEBUG_MODE = true;
+
+// Typ odpowiedzi z promocji
+export interface PromotionsResponse {
+  items: PromotionItem[];
+}
 
 /**
  * Sprawdza, czy Synerise jest już zainicjalizowany
@@ -123,10 +129,81 @@ export const handleSynerisePushNotification = async (pushData: any) => {
   });
 };
 
+/**
+ * Pobiera wszystkie promocje dostępne w Synerise
+ * @returns Promise z odpowiedzią zawierającą promocje
+ */
+export const getAllPromotions = (): Promise<PromotionsResponse> => {
+  return new Promise((resolve, reject) => {
+    // Jeśli Synerise nie jest zainicjalizowany, inicjalizuj go najpierw
+    if (!isSyneriseInitialized) {
+      console.log('Inicjalizuję Synerise przed pobraniem promocji');
+      
+      initSyneriseWithCallback(() => {
+        try {
+          if (Synerise && Synerise.Promotions) {
+            Synerise.Promotions.getAllPromotions(
+              (promotionResponse) => {
+                console.log('Promocje pobrane pomyślnie');
+                resolve(promotionResponse as unknown as PromotionsResponse);
+              },
+              (error) => {
+                console.error('Błąd podczas pobierania promocji:', error);
+                reject(error);
+              }
+            );
+          } else {
+            console.error('Moduł Promotions niedostępny po inicjalizacji');
+            reject(new Error('Moduł Promotions niedostępny'));
+          }
+        } catch (innerError) {
+          console.error('Błąd podczas pobierania promocji po inicjalizacji:', innerError);
+          reject(innerError);
+        }
+      });
+    } else {
+      // Synerise już zainicjalizowany, pobierz promocje bezpośrednio
+      Synerise.Promotions.getAllPromotions(
+        (promotionResponse) => {
+          console.log('Promocje pobrane pomyślnie');
+          resolve(promotionResponse as unknown as PromotionsResponse);
+        },
+        (error) => {
+          console.error('Błąd podczas pobierania promocji:', error);
+          reject(error);
+        }
+      );
+    }
+  });
+};
+
+/**
+ * Pobiera dokument z Synerise na podstawie jego slug
+ * @param slugName Nazwa slug dokumentu
+ * @returns Promise z odpowiedzią zawierającą dokument
+ */
+export const getDocument = (slugName: string): Promise<any> => {
+  return new Promise((resolve, reject) => {
+      Synerise.Content.generateDocument(
+        slugName,
+        (document) => {
+          resolve(document);
+        },
+        (error) => {
+          console.error(`Błąd podczas pobierania dokumentu ${slugName}:`, error);
+          reject(error);
+        }
+      );
+    
+  });
+};
+
 // Eksport domyślny wszystkich funkcji
 export default {
   isSyneriseAlreadyInitialized,
   initSyneriseSDK,
   initSyneriseWithCallback,
-  handleSynerisePushNotification
+  handleSynerisePushNotification,
+  getAllPromotions,
+  getDocument
 }; 

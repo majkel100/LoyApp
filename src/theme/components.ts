@@ -21,5 +21,10 @@ export default ({ backgrounds, fonts, layout }: ComponentTheme) => {
       height: 250,
       width: 250,
     },
+    circle100: {
+      borderRadius: 100,
+      height: 100,
+      width: 100,
+    },
   } as const satisfies AllStyle;
 };

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Image, StyleSheet, Text, View } from 'react-native';
+import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { useTheme } from '@/theme';
 
 // Interfejs dla danych promocji
@@ -19,9 +19,10 @@ export interface PromotionItem {
 interface PromotionCardProps {
   promotion: PromotionItem;
   userPoints?: string;
+  onRedeem?: (promotionId: string) => void;
 }
 
-const PromotionCard = ({ promotion, userPoints = '0' }: PromotionCardProps) => {
+const PromotionCard = ({ promotion, userPoints = '0', onRedeem }: PromotionCardProps) => {
   const { colors, fonts, gutters, layout, variant } = useTheme();
 
   // Pobierz URL obrazu z obrazów typu 'thumbnail'
@@ -54,6 +55,12 @@ const PromotionCard = ({ promotion, userPoints = '0' }: PromotionCardProps) => {
     ? 'Masz wystarczającą liczbę punktów!' 
     : `Brakuje Ci jeszcze ${pointsLeft} punktów`;
 
+  const handleRedeem = () => {
+    if (onRedeem && isComplete) {
+      onRedeem(promotion.uuid);
+    }
+  };
+
   return (
     <View
       style={[
@@ -77,12 +84,26 @@ const PromotionCard = ({ promotion, userPoints = '0' }: PromotionCardProps) => {
         <Text style={[fonts.size_16, fonts.bold, { color: textNameColor }]}>
           {promotion.name || 'Bez nazwy'}
         </Text>
-        <View style={[layout.row, layout.itemsCenter, gutters.marginTop_16]}>
+        <View style={[layout.row, layout.itemsCenter, layout.justifyBetween, gutters.marginTop_16]}>
           <View style={[styles.pointsContainer, { backgroundColor: isDarkMode ? '#44427D' : '#E1E1EF' }]}>
             <Text style={[fonts.size_16, fonts.bold, { color: textPointsColor }]}>
               {promotion.requireRedeemedPoints} punktów
             </Text>
           </View>
+          
+          {isComplete && (
+            <TouchableOpacity 
+              style={[
+                styles.buttonContainer, 
+                { backgroundColor: progressBarFilledColor }
+              ]} 
+              onPress={handleRedeem}
+            >
+              <Text style={[fonts.size_16, fonts.bold, { color: '#FFFFFF' }]}>
+                Wykorzystaj
+              </Text>
+            </TouchableOpacity>
+          )}
         </View>
         
         {/* Pasek postępu */}
@@ -157,7 +178,13 @@ const styles = StyleSheet.create({
   progressBarFilled: {
     height: '100%',
     borderRadius: 4,
-  }
+  },
+  buttonContainer: {
+    borderRadius: 8,
+    paddingVertical: 8,
+    paddingHorizontal: 12,
+    alignSelf: 'flex-start',
+  },
 });
 
 export default PromotionCard; 

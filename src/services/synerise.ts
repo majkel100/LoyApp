@@ -187,7 +187,12 @@ export const getDocument = (slugName: string): Promise<any> => {
       Synerise.Content.generateDocument(
         slugName,
         (document) => {
-          resolve(document);
+          console.log(document);
+          if (Platform.OS === 'ios') {
+            resolve(document);
+          } else {
+            resolve(document.content);
+          }
         },
         (error) => {
           console.error(`Błąd podczas pobierania dokumentu ${slugName}:`, error);

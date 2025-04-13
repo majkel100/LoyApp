@@ -1,5 +1,5 @@
-import React from 'react';
-import { StyleSheet, Text, View, Animated, Easing } from 'react-native';
+import React, { useEffect, useRef, useState } from 'react';
+import { StyleSheet, Text, View, Animated, Easing, TouchableOpacity } from 'react-native';
 import { useTheme } from '@/theme';
 
 export interface CustomerData {
@@ -10,18 +10,56 @@ export interface CustomerData {
 interface CustomerCardProps {
   customerData?: CustomerData;
   isLoading?: boolean;
+  onRefresh?: () => void;
 }
 
 // Stała wysokość komponentu
 const CARD_HEIGHT = 95;
 
-const CustomerCard = ({ customerData, isLoading = false }: CustomerCardProps) => {
+const CustomerCard = ({ customerData, isLoading = false, onRefresh }: CustomerCardProps) => {
   const { colors, fonts, gutters, layout, variant } = useTheme();
   // Inicjalizacja animacji dla efektu ładowania
-  const [pulseAnim] = React.useState(new Animated.Value(0));
+  const [pulseAnim] = useState(new Animated.Value(0));
+  const [displayData, setDisplayData] = useState<CustomerData | undefined>(customerData);
+  const prevDataRef = useRef<CustomerData | undefined>(undefined);
+  // Animacja płynnego przejścia
+  const [fadeAnim] = useState(new Animated.Value(1));
+
+  // Efekt do obsługi zachowania danych podczas ładowania
+  useEffect(() => {
+    if (!isLoading && customerData) {
+      // Jeśli dane się zmieniły, wykonaj animację przejścia
+      if (JSON.stringify(displayData) !== JSON.stringify(customerData)) {
+        // Najpierw ukryj aktualny widok
+        Animated.timing(fadeAnim, {
+          toValue: 0,
+          duration: 100,
+          useNativeDriver: true,
+        }).start(() => {
+          // Aktualizuj dane
+          prevDataRef.current = customerData;
+          setDisplayData(customerData);
+          
+          // Pokaż nowy widok
+          Animated.timing(fadeAnim, {
+            toValue: 1,
+            duration: 150,
+            useNativeDriver: true,
+          }).start();
+        });
+      } else {
+        // Jeśli dane się nie zmieniły, po prostu je zapisz
+        prevDataRef.current = customerData;
+        setDisplayData(customerData);
+      }
+    } else if (isLoading && prevDataRef.current) {
+      // Podczas ładowania używaj poprzednich danych, aby uniknąć migotania
+      setDisplayData(prevDataRef.current);
+    }
+  }, [isLoading, customerData]);
 
   // Uruchomienie animacji pulsowania
-  React.useEffect(() => {
+  useEffect(() => {
     if (isLoading) {
       Animated.loop(
         Animated.sequence([
@@ -59,8 +97,15 @@ const CustomerCard = ({ customerData, isLoading = false }: CustomerCardProps) =>
   });
 
   // Nazwa użytkownika lub domyślnie "Hej!"
-  const greeting = customerData?.firstName ? `Hej ${customerData.firstName}!` : 'Hej!';
-  const points = customerData?.points || '0';
+  const greeting = displayData?.firstName ? `Hej ${displayData.firstName}!` : 'Hej!';
+  const points = displayData?.points || '0';
+
+  // Funkcja obsługująca dotknięcie karty punktów
+  const handleRefresh = () => {
+    if (onRefresh && !isLoading) {
+      onRefresh();
+    }
+  };
 
   return (
     <View
@@ -71,7 +116,7 @@ const CustomerCard = ({ customerData, isLoading = false }: CustomerCardProps) =>
         gutters.marginRight_24
       ]}
     >
-      {isLoading ? (
+      {!displayData || (isLoading && !prevDataRef.current) ? (
         <View style={[styles.loadingContainer, { height: CARD_HEIGHT }]}>
           <Animated.View 
             style={[
@@ -87,16 +132,21 @@ const CustomerCard = ({ customerData, isLoading = false }: CustomerCardProps) =>
           />
         </View>
       ) : (
-        <View style={[styles.contentWrapper, { height: CARD_HEIGHT }]}>
+        <Animated.View 
+          style={[
+            styles.contentWrapper, 
+            { height: CARD_HEIGHT, opacity: fadeAnim }
+          ]}
+        >
           <Text 
             style={[fonts.size_24, fonts.bold, { color: textNameColor }, styles.greetingText]}
             numberOfLines={1}
             adjustsFontSizeToFit
           >
-            {customerData?.firstName ? (
+            {displayData?.firstName ? (
               <>
                 <Text style={{ color: textPointsColor }}>Hej,</Text>
-                <Text> {customerData.firstName}!</Text>
+                <Text> {displayData.firstName}!</Text>
               </>
             ) : (
               <>
@@ -105,7 +155,11 @@ const CustomerCard = ({ customerData, isLoading = false }: CustomerCardProps) =>
               </>
             )}
           </Text>
-          <View style={[styles.pointsContainer, { backgroundColor: pointsBackgroundColor }]}>
+          <TouchableOpacity 
+            style={[styles.pointsContainer, { backgroundColor: pointsBackgroundColor }]}
+            onPress={handleRefresh}
+            disabled={isLoading || !onRefresh}
+          >
             <Text 
               style={[fonts.size_16, fonts.bold, { color: textPointsColor }]}
               numberOfLines={1}
@@ -113,8 +167,8 @@ const CustomerCard = ({ customerData, isLoading = false }: CustomerCardProps) =>
             >
               {points} punktów
             </Text>
-          </View>
-        </View>
+          </TouchableOpacity>
+        </Animated.View>
       )}
     </View>
   );
@@ -155,11 +209,11 @@ const styles = StyleSheet.create({
   },
   loadingGreeting: {
     width: '40%',
-    height: 28,
+    height: 40,
     borderRadius: 8,
   },
   loadingPoints: {
-    width: '35%',
+    width: '40%',
     height: 45,
     borderRadius: 8,
     borderTopRightRadius: 0,

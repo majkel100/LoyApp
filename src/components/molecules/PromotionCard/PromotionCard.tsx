@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { Image, StyleSheet, Text, TouchableOpacity, View, Animated } from 'react-native';
 import { useTheme } from '@/theme';
 import { QRCodeDrawer } from '@/components/molecules';
 
@@ -9,6 +9,7 @@ export interface PromotionItem {
   name?: string;
   code: string;
   requireRedeemedPoints: number;
+  status?: string;
   images?: Array<{
     url: string;
     type: string;
@@ -20,12 +21,16 @@ export interface PromotionItem {
 interface PromotionCardProps {
   promotion: PromotionItem;
   userPoints?: string;
+  clientID?: string;
   onRedeem?: (promotionId: string) => void;
+  onRefresh?: () => void;
 }
 
-const PromotionCard = ({ promotion, userPoints = '0', onRedeem }: PromotionCardProps) => {
+const PromotionCard = ({ promotion, userPoints = '0', clientID, onRedeem, onRefresh }: PromotionCardProps) => {
   const { colors, fonts, gutters, layout, variant } = useTheme();
   const [qrDrawerVisible, setQrDrawerVisible] = useState(false);
+  const [imageLoading, setImageLoading] = useState(true);
+  const [fadeAnim] = useState(new Animated.Value(0));
 
   // Pobierz URL obrazu z obrazów typu 'thumbnail'
   const imageUrl = promotion.images?.find(img => img.type === 'thumbnail')?.url;
@@ -37,6 +42,7 @@ const PromotionCard = ({ promotion, userPoints = '0', onRedeem }: PromotionCardP
   const textPointsColor = isDarkMode ? '#A6A4F0' : colors.purple500;
   const cardBackgroundColor = isDarkMode ? '#252732' : colors.gray50;
   const contentBackgroundColor = isDarkMode ? '#1B1A23' : '#FFFFFF';
+  const skeletonBaseColor = isDarkMode ? '#373945' : '#E5E5E5';
   
   // Kolory dla paska postępu
   const progressBarBackgroundColor = isDarkMode ? '#373945' : '#E5E5E5';
@@ -50,12 +56,15 @@ const PromotionCard = ({ promotion, userPoints = '0', onRedeem }: PromotionCardP
   // Ograniczamy postęp do maksymalnie 100%
   progressPercentage = Math.min(progressPercentage, 100);
   
-  // Status postępu
-  const isComplete = userPointsNumber >= requiredPoints;
+  // Status promocji i postępu
+  const isActive = promotion.status === 'ACTIVE';
+  const isComplete = isActive || userPointsNumber >= requiredPoints;
   const pointsLeft = Math.max(requiredPoints - userPointsNumber, 0);
-  const progressStatusText = isComplete 
-    ? 'Masz wystarczającą liczbę punktów!' 
-    : `Brakuje Ci jeszcze ${pointsLeft} punktów`;
+  const progressStatusText = isActive 
+    ? 'Promocja aktywna' 
+    : isComplete 
+      ? 'Masz wystarczającą liczbę punktów!' 
+      : `Brakuje Ci jeszcze ${pointsLeft} punktów`;
 
   const handleRedeem = () => {
     if (isComplete) {
@@ -64,6 +73,15 @@ const PromotionCard = ({ promotion, userPoints = '0', onRedeem }: PromotionCardP
         onRedeem(promotion.uuid);
       }
     }
+  };
+
+  const handleImageLoad = () => {
+    setImageLoading(false);
+    Animated.timing(fadeAnim, {
+      toValue: 1,
+      duration: 300,
+      useNativeDriver: true,
+    }).start();
   };
 
   return (
@@ -76,7 +94,19 @@ const PromotionCard = ({ promotion, userPoints = '0', onRedeem }: PromotionCardP
         ]}
       >
         {imageUrl ? (
-          <Image source={{ uri: imageUrl }} style={styles.image} />
+          <View style={styles.imageContainer}>
+            {imageLoading && (
+              <View style={[styles.imagePlaceholder, { backgroundColor: skeletonBaseColor }]} />
+            )}
+            <Animated.View style={{ opacity: fadeAnim, position: 'absolute', top: 0, left: 0, right: 0, bottom: 0 }}>
+              <Image 
+                source={{ uri: imageUrl }} 
+                style={styles.image} 
+                onLoad={handleImageLoad}
+                resizeMethod="resize"
+              />
+            </Animated.View>
+          </View>
         ) : (
           <View style={[styles.imagePlaceholder, { backgroundColor: colors.gray100 }]} />
         )}
@@ -112,32 +142,34 @@ const PromotionCard = ({ promotion, userPoints = '0', onRedeem }: PromotionCardP
             )}
           </View>
           
-          {/* Pasek postępu */}
-          <View style={[styles.progressBarContainer, gutters.marginTop_16]}>
-            <View style={[
-              styles.progressBarBackground,
-              { backgroundColor: progressBarBackgroundColor }
-            ]}>
-              <View 
+          {/* Pasek postępu - nie pokazujemy dla aktywnych promocji */}
+          {!isActive && (
+            <View style={[styles.progressBarContainer, gutters.marginTop_16]}>
+              <View style={[
+                styles.progressBarBackground,
+                { backgroundColor: progressBarBackgroundColor }
+              ]}>
+                <View 
+                  style={[
+                    styles.progressBarFilled,
+                    { 
+                      backgroundColor: progressBarFilledColor,
+                      width: `${progressPercentage}%`
+                    }
+                  ]}
+                />
+              </View>
+              <Text 
                 style={[
-                  styles.progressBarFilled,
-                  { 
-                    backgroundColor: progressBarFilledColor,
-                    width: `${progressPercentage}%`
-                  }
+                  fonts.size_12, 
+                  gutters.marginTop_12, 
+                  { color: isComplete ? progressBarFilledColor : textHeadlineColor }
                 ]}
-              />
+              >
+                {progressStatusText}
+              </Text>
             </View>
-            <Text 
-              style={[
-                fonts.size_12, 
-                gutters.marginTop_12, 
-                { color: isComplete ? progressBarFilledColor : textHeadlineColor }
-              ]}
-            >
-              {progressStatusText}
-            </Text>
-          </View>
+          )}
         </View>
       </View>
 
@@ -145,6 +177,11 @@ const PromotionCard = ({ promotion, userPoints = '0', onRedeem }: PromotionCardP
         isVisible={qrDrawerVisible}
         onClose={() => setQrDrawerVisible(false)}
         promotionId={promotion.uuid}
+        clientID={clientID}
+        onRefresh={onRefresh}
+        status={promotion.status}
+        promotionName={promotion.name}
+        requiredPoints={promotion.requireRedeemedPoints}
       />
     </>
   );
@@ -160,8 +197,13 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.1,
     shadowRadius: 4,
   },
-  image: {
+  imageContainer: {
     height: 150,
+    width: '100%',
+    position: 'relative',
+  },
+  image: {
+    height: '100%',
     width: '100%',
     resizeMode: 'cover',
   },

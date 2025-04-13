@@ -136,36 +136,10 @@ export const handleSynerisePushNotification = async (pushData: any) => {
 export const getAllPromotions = (): Promise<PromotionsResponse> => {
   return new Promise((resolve, reject) => {
     // Jeśli Synerise nie jest zainicjalizowany, inicjalizuj go najpierw
-    if (!isSyneriseInitialized) {
-      console.log('Inicjalizuję Synerise przed pobraniem promocji');
-      
-      initSyneriseWithCallback(() => {
-        try {
-          if (Synerise && Synerise.Promotions) {
-            Synerise.Promotions.getAllPromotions(
-              (promotionResponse) => {
-                console.log('Promocje pobrane pomyślnie');
-                resolve(promotionResponse as unknown as PromotionsResponse);
-              },
-              (error) => {
-                console.error('Błąd podczas pobierania promocji:', error);
-                reject(error);
-              }
-            );
-          } else {
-            console.error('Moduł Promotions niedostępny po inicjalizacji');
-            reject(new Error('Moduł Promotions niedostępny'));
-          }
-        } catch (innerError) {
-          console.error('Błąd podczas pobierania promocji po inicjalizacji:', innerError);
-          reject(innerError);
-        }
-      });
-    } else {
+    
       // Synerise już zainicjalizowany, pobierz promocje bezpośrednio
       Synerise.Promotions.getAllPromotions(
         (promotionResponse) => {
-          console.log('Promocje pobrane pomyślnie');
           resolve(promotionResponse as unknown as PromotionsResponse);
         },
         (error) => {
@@ -174,7 +148,7 @@ export const getAllPromotions = (): Promise<PromotionsResponse> => {
         }
       );
     }
-  });
+  );
 };
 
 /**
@@ -187,7 +161,7 @@ export const getDocument = (slugName: string): Promise<any> => {
       Synerise.Content.generateDocument(
         slugName,
         (document) => {
-          console.log(document);
+          // console.log(document);
           if (Platform.OS === 'ios') {
             resolve(document);
           } else {
@@ -203,6 +177,68 @@ export const getDocument = (slugName: string): Promise<any> => {
   });
 };
 
+/**
+ * Pobiera promocję z Synerise na podstawie UUID
+ * @param uuid UUID promocji
+ * @returns Promise z odpowiedzią zawierającą promocję
+ */
+export const getPromotionByUUID = (uuid: string): Promise<any> => {
+  return new Promise((resolve, reject) => {
+    Synerise.Promotions.getPromotionByUUID(
+      uuid,
+      (promotion) => {
+        resolve(promotion);
+      },
+      (error) => {
+        console.error(`Błąd podczas pobierania promocji o UUID ${uuid}:`, error);
+        reject(error);
+      }
+    );
+  });
+};
+
+/**
+ * Aktywuje promocję w Synerise na podstawie UUID
+ * @param uuid UUID promocji
+ * @returns Promise rozwiązywana po aktywacji promocji
+ */
+export const activatePromotionByUUID = (uuid: string): Promise<void> => {
+  return new Promise((resolve, reject) => {
+    Synerise.Promotions.activatePromotionByUUID(
+      uuid,
+      () => {
+        console.log(`Promocja o UUID ${uuid} została aktywowana`);
+        resolve();
+      },
+      (error) => {
+        console.error(`Błąd podczas aktywacji promocji o UUID ${uuid}:`, error);
+        reject(error);
+      }
+    );
+  });
+};
+
+/**
+ * Deaktywuje promocję w Synerise na podstawie UUID
+ * @param uuid UUID promocji
+ * @returns Promise rozwiązywana po deaktywacji promocji
+ */
+export const deactivatePromotionByUUID = (uuid: string): Promise<void> => {
+  return new Promise((resolve, reject) => {
+    Synerise.Promotions.deactivatePromotionByUUID(
+      uuid,
+      () => {
+        console.log(`Promocja o UUID ${uuid} została deaktywowana`);
+        resolve();
+      },
+      (error) => {
+        console.error(`Błąd podczas deaktywacji promocji o UUID ${uuid}:`, error);
+        reject(error);
+      }
+    );
+  });
+};
+
 // Eksport domyślny wszystkich funkcji
 export default {
   isSyneriseAlreadyInitialized,
@@ -210,5 +246,8 @@ export default {
   initSyneriseWithCallback,
   handleSynerisePushNotification,
   getAllPromotions,
-  getDocument
+  getDocument,
+  getPromotionByUUID,
+  activatePromotionByUUID,
+  deactivatePromotionByUUID
 }; 

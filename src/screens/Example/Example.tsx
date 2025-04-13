@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Alert, ScrollView, Text, TouchableOpacity, View } from 'react-native';
 
@@ -33,7 +33,11 @@ function Example() {
   const [promotions, setPromotions] = useState<PromotionItem[]>([]);
   const [isLoadingPromotions, setIsLoadingPromotions] = useState(false);
   const [customerData, setCustomerData] = useState<CustomerData | undefined>(undefined);
+  const [clientID, setClientID] = useState<string | undefined>(undefined);
   const [isLoadingCustomerData, setIsLoadingCustomerData] = useState(false);
+  const [refreshInProgress, setRefreshInProgress] = useState(false);
+  const prevPromotionsRef = useRef<PromotionItem[]>([]);
+  const prevCustomerDataRef = useRef<CustomerData | undefined>(undefined);
 
   const fetchOneUserQuery = useFetchOneQuery(currentId);
 
@@ -47,56 +51,93 @@ function Example() {
 
   // Pobieranie promocji przy montowaniu komponentu
   useEffect(() => {
-    const fetchPromotions = async () => {
-      try {
-        setIsLoadingPromotions(true);
-        const response = await getAllPromotions();
-        console.log('Pobrane promocje:', JSON.stringify(response, null, 2));
-
-        if (response && response.items) {
-          setPromotions(response.items);
-        }
-      } catch (error) {
-        console.error('Błąd podczas pobierania promocji:', error);
-      } finally {
-        setIsLoadingPromotions(false);
-      }
-    };
-
     fetchPromotions();
   }, []);
 
+  // Funkcja do pobierania promocji
+  const fetchPromotions = async () => {
+    try {
+      setIsLoadingPromotions(true);
+      
+      // Zachowaj poprzednie dane podczas ładowania nowych
+      if (promotions.length > 0) {
+        prevPromotionsRef.current = promotions;
+      }
+      
+      // Dodanie sztucznego opóźnienia do testów
+      await new Promise(resolve => setTimeout(resolve, 500));
+      
+      const response = await getAllPromotions();
+
+      if (response && response.items) {
+        setPromotions(response.items);
+      }
+    } catch (error) {
+      console.error('Błąd podczas pobierania promocji:', error);
+      // W przypadku błędu, przywróć poprzednie dane
+      if (prevPromotionsRef.current.length > 0) {
+        setPromotions(prevPromotionsRef.current);
+      }
+    } finally {
+      setIsLoadingPromotions(false);
+    }
+  };
+
+  // Funkcja do pobierania danych klienta
+  const fetchCustomerData = async () => {
+    try {
+      setIsLoadingCustomerData(true);
+      
+      // Zachowaj poprzednie dane podczas ładowania nowych
+      if (customerData) {
+        prevCustomerDataRef.current = customerData;
+      }
+      
+      const documentFirstname = await getDocument('customer-data');
+      const documentPoints = await getDocument('loyalty-points');
+      const { firstName, clientId } = documentFirstname.content;
+      const { points } = documentPoints.content;
+
+      if (firstName || points) {
+        setCustomerData({
+          firstName: firstName || '',
+          points: points || '0'
+        });
+      }
+      
+      // Ustaw clientID
+      if (clientId) {
+        setClientID(clientId);
+      }
+    } catch (error) {
+      console.error('Błąd podczas pobierania danych klienta:', error);
+      // W przypadku błędu, przywróć poprzednie dane
+      if (prevCustomerDataRef.current) {
+        setCustomerData(prevCustomerDataRef.current);
+      }
+    } finally {
+        setIsLoadingCustomerData(false);
+    }
+  };
+
   // Pobieranie dokumentu customer-data przy montowaniu komponentu
   useEffect(() => {
-    const fetchCustomerData = async () => {
-      try {
-        setIsLoadingCustomerData(true);
-        const document = await getDocument('customer-data');
-        console.log('Document:', JSON.stringify(document, null, 2));
-
-        const { firstName, points } = document.content;
-        console.log(`firstName=${firstName}, points=${points}`);
-        setCustomerData({ firstName, points });
-
-        if (firstName || points) {
-          setCustomerData({
-            firstName: firstName || '',
-            points: points || '0'
-          });
-        }
-
-      } catch (error) {
-        console.error('Błąd podczas pobierania danych klienta:', error);
-      } finally {
-        setIsLoadingCustomerData(false);
-      }
-    };
-
     fetchCustomerData();
   }, []);
 
   const onChangeTheme = () => {
     changeTheme(variant === 'default' ? 'dark' : 'default');
+  };
+
+  // Funkcja do odświeżania danych klienta i promocji
+  const handleRefreshCustomerData = () => {
+    if (refreshInProgress) return; // Zapobiegaj wielokrotnym odświeżeniom
+
+    setRefreshInProgress(true);
+    fetchCustomerData();
+    fetchPromotions().finally(() => {
+      setRefreshInProgress(false);
+    });
   };
 
   return (
@@ -110,7 +151,30 @@ function Example() {
           <CustomerCard
             customerData={customerData}
             isLoading={isLoadingCustomerData}
+            onRefresh={handleRefreshCustomerData}
           />
+        </View>
+
+        {/* Przycisk do testowego odświeżania danych klienta */}
+        <View style={[gutters.marginHorizontal_16, gutters.marginTop_16]}>
+          <TouchableOpacity
+            onPress={handleRefreshCustomerData}
+            style={[
+              {
+                backgroundColor: colors.purple500,
+                padding: 12,
+                borderRadius: 8
+              },
+              layout.justifyCenter,
+              layout.itemsCenter,
+            ]}
+            disabled={isLoadingCustomerData}
+            testID="refresh-customer-data-button"
+          >
+            <Text style={[fonts.size_16, fonts.bold, { color: '#FFFFFF' }]}>
+              Odśwież dane klienta (test)
+            </Text>
+          </TouchableOpacity>
         </View>
 
         {/* Lista promocji */}
@@ -119,27 +183,9 @@ function Example() {
             promotions={promotions}
             isLoading={isLoadingPromotions}
             userPoints={customerData?.points}
+            clientID={clientID}
+            onRefresh={handleRefreshCustomerData}
           />
-        </View>
-
-        <View
-          style={[
-            layout.justifyCenter,
-            layout.itemsCenter,
-            gutters.marginTop_40,
-          ]}
-        >
-          <View
-            style={[layout.relative, backgrounds.limeGreen, components.circle250]}
-          />
-
-          <View style={[layout.absolute, gutters.paddingTop_80]}>
-            <AssetByVariant
-              path={'ampa'}
-              resizeMode={'contain'}
-              style={{ height: 300, width: 300 }}
-            />
-          </View>
         </View>
 
         <View style={[gutters.paddingHorizontal_32, gutters.marginTop_40]}>

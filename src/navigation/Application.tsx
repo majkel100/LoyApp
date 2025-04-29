@@ -7,7 +7,11 @@ import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { useTheme } from '@/theme';
 import { Paths } from '@/navigation/paths';
 
-import { Example, Startup } from '@/screens';
+import { Startup } from '@/screens';
+import Home from '@/screens/Home';
+import { TabNavigator } from '@/navigation';
+import Login from '@/screens/Auth/Login';
+import Register from '@/screens/Auth/Register';
 
 const Stack = createStackNavigator<RootStackParamList>();
 
@@ -19,7 +23,9 @@ function ApplicationNavigator() {
       <NavigationContainer theme={navigationTheme}>
         <Stack.Navigator key={variant} screenOptions={{ headerShown: false }}>
           <Stack.Screen component={Startup} name={Paths.Startup} />
-          <Stack.Screen component={Example} name={Paths.Example} />
+          <Stack.Screen component={TabNavigator} name={Paths.Main} />
+          <Stack.Screen component={Login} name={Paths.Login} />
+          <Stack.Screen component={Register} name={Paths.Register} />
         </Stack.Navigator>
       </NavigationContainer>
     </SafeAreaProvider>

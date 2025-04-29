@@ -24,9 +24,10 @@ interface PromotionCardProps {
   clientID?: string;
   onRedeem?: (promotionId: string) => void;
   onRefresh?: () => void;
+  email?: string;
 }
 
-const PromotionCard = ({ promotion, userPoints = '0', clientID, onRedeem, onRefresh }: PromotionCardProps) => {
+const PromotionCard = ({ promotion, userPoints = '0', clientID, onRedeem, onRefresh, email }: PromotionCardProps) => {
   const { colors, fonts, gutters, layout, variant } = useTheme();
   const [qrDrawerVisible, setQrDrawerVisible] = useState(false);
   const [imageLoading, setImageLoading] = useState(true);
@@ -182,6 +183,8 @@ const PromotionCard = ({ promotion, userPoints = '0', clientID, onRedeem, onRefr
         status={promotion.status}
         promotionName={promotion.name}
         requiredPoints={promotion.requireRedeemedPoints}
+        promotionCode={promotion.code}
+        email={email}
       />
     </>
   );

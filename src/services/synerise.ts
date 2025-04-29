@@ -1,6 +1,7 @@
 import { Synerise } from 'react-native-synerise-sdk';
 import { Platform } from 'react-native';
 import { PromotionItem } from '@/components/molecules/PromotionCard';
+import { ClientAccountRegisterContext } from 'react-native-synerise-sdk/lib/classes/models/Client/ClientAccountRegisterContext';
 
 // Flaga do śledzenia stanu inicjalizacji Synerise
 let isSyneriseInitialized = false;
@@ -12,6 +13,42 @@ const DEBUG_MODE = true;
 // Typ odpowiedzi z promocji
 export interface PromotionsResponse {
   items: PromotionItem[];
+}
+
+// Typ dla elementu karuzeli wyświetlanego w komponencie
+export interface CarouselItemDisplay {
+  title: string;
+  description: string;
+  image: string;
+}
+
+// Typ dla elementu karuzeli ze screenView
+export interface CarouselItem {
+  schema: string;
+  content: {
+    title: string;
+    description: string;
+    image: string;
+  };
+  slug: string;
+  uuid: string;
+}
+
+// Typ dla odpowiedzi ze screenView
+export interface ScreenViewResponse {
+  identifier: string;
+  name: string;
+  hash: string;
+  path: string;
+  priority: number;
+  audience: {
+    targetType: string;
+  };
+  data: {
+    collection: CarouselItem[];
+  };
+  createdAt: string;
+  updatedAt: string;
 }
 
 /**
@@ -81,6 +118,104 @@ export const initSyneriseWithCallback = (callback?: () => void) => {
         resolve();
       });
     });
+  });
+};
+
+/**
+ * Sprawdza, czy użytkownik jest zalogowany
+ * @returns Boolean wskazujący, czy użytkownik jest zalogowany
+ */
+export const isSignedIn = (): boolean => {
+  return Synerise.Client.isSignedIn();
+};
+
+/**
+ * Rejestruje nowego użytkownika w systemie
+ * @param email Email użytkownika
+ * @param password Hasło użytkownika
+ * @param firstName Imię użytkownika
+ * @param referralCode Kod polecający
+ * @returns Promise rozwiązywana po rejestracji
+ */
+export const registerAccount = (
+  email: string,
+  password: string,
+  firstName: string,
+  referralCode: string
+): Promise<void> => {
+  return new Promise((resolve, reject) => {
+    try {
+      // Używamy zaimportowanej klasy ClientAccountRegisterContext
+      const context = new ClientAccountRegisterContext(email, password);
+      
+      // Dodajemy stały numer telefonu
+      context.phone = '500500500';
+      
+      // Dodajemy opcjonalne pola
+      if (firstName) {
+        context.firstName = firstName;
+      }
+      
+      // Dodajemy atrybuty jako obiekt, jeśli kod polecający został podany
+      if (referralCode) {
+        context.attributes = { referralCode };
+      }
+      // Wywołanie API Synerise
+      Synerise.Client.registerAccount(
+        context,
+        () => {
+          resolve();
+        },
+        (error: any) => {
+          // Szczegółowe logowanie błędu
+          console.error('Błąd podczas rejestracji użytkownika:', error);
+          
+          reject(error);
+        }
+      );
+    } catch (error) {
+      console.error('Nieoczekiwany błąd podczas przygotowania rejestracji:', error);
+      reject(error);
+    }
+  });
+};
+
+/**
+ * Loguje użytkownika do systemu
+ * @param email Email użytkownika
+ * @param password Hasło użytkownika
+ * @returns Promise rozwiązywana po zalogowaniu
+ */
+export const signIn = (email: string, password: string): Promise<void> => {
+  return new Promise((resolve, reject) => {
+    Synerise.Client.signIn(
+      email,
+      password,
+      () => {
+        resolve();
+      },
+      (error: any) => {
+        console.error('Błąd podczas logowania użytkownika:', error);
+        reject(error);
+      }
+    );
+  });
+};
+
+/**
+ * Wylogowuje użytkownika z systemu
+ * @returns Promise rozwiązywana po wylogowaniu
+ */
+export const signOut = (): Promise<void> => {
+  return new Promise((resolve, reject) => {
+    try {
+      Synerise.Client.signOut();
+      console.log('Użytkownik został pomyślnie wylogowany');
+      resolve();
+    } catch (error) {
+      console.error('Błąd podczas wylogowywania użytkownika:', error);
+      reject(error);
+    }
   });
 };
 
@@ -239,6 +374,34 @@ export const deactivatePromotionByUUID = (uuid: string): Promise<void> => {
   });
 };
 
+/**
+ * Generuje screenView z Synerise na podstawie jego slug
+ * @param feedSlug Nazwa feedSlug
+ * @returns Promise z odpowiedzią zawierającą screenView
+ */
+export const generateScreenView = (feedSlug: string): Promise<ScreenViewResponse> => {
+  return new Promise((resolve, reject) => {
+    try {
+      console.log(`Rozpoczynam pobieranie screenView dla sluga: ${feedSlug}`);
+      
+      Synerise.Content.generateScreenView(
+        feedSlug,
+        (screenView) => {
+          console.log('Otrzymano odpowiedź screenView:', JSON.stringify(screenView));
+          resolve(screenView as unknown as ScreenViewResponse);
+        },
+        (error) => {
+          console.error(`Błąd podczas pobierania screenView ${feedSlug}:`, error);
+          reject(error);
+        }
+      );
+    } catch (error) {
+      console.error('Nieoczekiwany błąd podczas generowania screenView:', error);
+      reject(error);
+    }
+  });
+};
+
 // Eksport domyślny wszystkich funkcji
 export default {
   isSyneriseAlreadyInitialized,
@@ -249,5 +412,10 @@ export default {
   getDocument,
   getPromotionByUUID,
   activatePromotionByUUID,
-  deactivatePromotionByUUID
+  deactivatePromotionByUUID,
+  isSignedIn,
+  registerAccount,
+  signIn,
+  signOut,
+  generateScreenView
 }; 

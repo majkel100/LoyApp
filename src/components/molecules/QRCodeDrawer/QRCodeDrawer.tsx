@@ -10,6 +10,7 @@ import {
   View,
   ActivityIndicator 
 } from 'react-native';
+import { Buffer } from 'buffer';
 import { useTheme } from '@/theme';
 import QRCode from 'react-native-qrcode-svg';
 import { activatePromotionByUUID, deactivatePromotionByUUID } from '@/services/synerise';
@@ -23,6 +24,8 @@ interface QRCodeDrawerProps {
   status?: 'ACTIVE' | 'ASSIGNED' | string;
   promotionName?: string;
   requiredPoints?: number;
+  promotionCode?: string;
+  email?: string;
 }
 
 const QRCodeDrawer: React.FC<QRCodeDrawerProps> = ({ 
@@ -33,7 +36,9 @@ const QRCodeDrawer: React.FC<QRCodeDrawerProps> = ({
   onRefresh,
   status = '',
   promotionName = '',
-  requiredPoints = 0
+  requiredPoints = 0,
+  promotionCode = '',
+  email = ''
 }) => {
   const { colors, fonts, gutters, variant } = useTheme();
   const drawerAnimation = useRef(new Animated.Value(0)).current;
@@ -61,13 +66,17 @@ const QRCodeDrawer: React.FC<QRCodeDrawerProps> = ({
   const successColor = isDarkMode ? '#4CAF50' : '#4CAF50';
   const errorColor = isDarkMode ? '#F44336' : '#F44336';
   
-  // Tworzenie wartości kodu QR jako zakodowany obiekt JSON
+  // Tworzenie wartości kodu QR jako obiekt JSON enkodowany do base64
   const getQRValue = () => {
     const qrData = {
-      promotionUUID: promotionId || '',
-      clientID: clientID || ''
+      type: "promotion",
+      promotionName: promotionName,
+      promotionCode: promotionCode,
+      clientId: clientID || '',
+      email: email
     };
-    return JSON.stringify(qrData);
+    console.log(qrData);
+    return Buffer.from(JSON.stringify(qrData)).toString('base64');
   };
   
   useEffect(() => {

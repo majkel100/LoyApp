@@ -10,33 +10,40 @@ import { Paths } from '@/navigation/paths';
 
 import { AssetByVariant } from '@/components/atoms';
 import { SafeScreen } from '@/components/templates';
-import { initSyneriseWithCallback } from '@/services/synerise';
+import { initSyneriseWithCallback, isSignedIn } from '@/services/synerise';
 import { initFcmAndRegisterWithSynerise } from '@/services/fcm';
 
 function Startup({ navigation }: RootScreenProps<Paths.Startup>) {
   const { fonts, gutters, layout } = useTheme();
   const { t } = useTranslation();
 
-  const { isError, isFetching, isSuccess } = useQuery({
+  const { isError, isFetching, isSuccess, data } = useQuery({
     queryFn: async () => {
       // Inicjalizacja Synerise i FCM podczas uruchamiania aplikacji
       await initSyneriseWithCallback(async () => {
         // Po pełnej inicjalizacji Synerise, zainicjalizuj FCM
         await initFcmAndRegisterWithSynerise();
       });
-      return Promise.resolve(true);
+      
+      // Sprawdzenie, czy użytkownik jest zalogowany
+      const userIsSignedIn = isSignedIn();
+      return userIsSignedIn;
     },
     queryKey: ['startup'],
   });
 
   useEffect(() => {
     if (isSuccess) {
+      // Jeśli użytkownik jest zalogowany, przenieś go do głównego ekranu
+      // W przeciwnym razie przenieś go do ekranu logowania
+      const targetScreen = data ? Paths.Main : Paths.Login;
+      
       navigation.reset({
         index: 0,
-        routes: [{ name: Paths.Example }],
+        routes: [{ name: targetScreen }],
       });
     }
-  }, [isSuccess, navigation]);
+  }, [isSuccess, navigation, data]);
 
   return (
     <SafeScreen>

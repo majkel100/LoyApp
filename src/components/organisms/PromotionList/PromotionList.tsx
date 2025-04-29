@@ -10,12 +10,13 @@ interface PromotionListProps {
   userPoints?: string;
   clientID?: string;
   onRefresh?: () => void;
+  email?: string;
 }
 
 // Szacowana wysokość całego ekranu (minus inne elementy UI)
 const SCREEN_HEIGHT = Dimensions.get('window').height * 0.7;
 
-const PromotionList = ({ promotions, isLoading = false, userPoints = '0', clientID, onRefresh }: PromotionListProps) => {
+const PromotionList = ({ promotions, isLoading = false, userPoints = '0', clientID, onRefresh, email }: PromotionListProps) => {
   const { fonts, gutters, colors, variant } = useTheme();
   const [showOnlyAvailable, setShowOnlyAvailable] = useState(false);
   // Inicjalizacja animacji dla efektu ładowania
@@ -175,6 +176,7 @@ const PromotionList = ({ promotions, isLoading = false, userPoints = '0', client
             userPoints={userPoints}
             clientID={clientID}
             onRefresh={onRefresh}
+            email={email}
           />
         ))}
       </Animated.View>

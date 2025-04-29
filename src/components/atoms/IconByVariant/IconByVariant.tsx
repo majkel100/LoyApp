@@ -2,6 +2,7 @@ import type { ReactElement } from 'react';
 import type { SvgProps } from 'react-native-svg';
 
 import { useCallback, useEffect, useState } from 'react';
+import { Platform } from 'react-native';
 import { z } from 'zod';
 
 import { useTheme } from '@/theme';
@@ -14,7 +15,7 @@ type Props = {
 const icons = getAssetsContext('icons');
 const EXTENSION = 'svg';
 
-function IconByVariant({ height = 24, path, width = 24, ...props }: Props) {
+function IconByVariant({ height = 24, path, width = 24, fill = 'none', ...props }: Props) {
   const [icon, setIcon] = useState<ReactElement<SvgProps>>();
   const { variant } = useTheme();
 
@@ -55,17 +56,28 @@ function IconByVariant({ height = 24, path, width = 24, ...props }: Props) {
         return null;
       }
 
+      // Dodatkowa konfiguracja dla Androida
+      const androidProps = Platform.OS === 'android' 
+        ? { 
+            strokeWidth: props.strokeWidth || 1.5,
+            strokeLinecap: 'round',
+            strokeLinejoin: 'round'
+          }
+        : {};
+
       return {
         ...icon,
         props: {
           ...icon.props,
           height,
           width,
+          fill,
+          ...androidProps,
           ...currentProps,
         },
       };
     },
-    [icon, width, height],
+    [icon, width, height, fill, props.strokeWidth],
   );
 
   return <Component {...props} />;

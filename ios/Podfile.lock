@@ -1389,9 +1389,9 @@ PODS:
     - ReactCommon/turbomodule/bridging
     - ReactCommon/turbomodule/core
     - Yoga
-  - react-native-synerise-sdk (1.0.1):
+  - react-native-synerise-sdk (1.1.1):
     - React
-    - SyneriseSDK (= 5.0.6)
+    - SyneriseSDK (= 5.1.0)
   - React-nativeconfig (0.76.1)
   - React-NativeModulesApple (0.76.1):
     - glog
@@ -1841,7 +1841,7 @@ PODS:
     - ReactCommon/turbomodule/bridging
     - ReactCommon/turbomodule/core
     - Yoga
-  - RNSVG (15.11.2):
+  - RNSVG (15.8.0):
     - DoubleConversion
     - glog
     - hermes-engine
@@ -1861,9 +1861,9 @@ PODS:
     - ReactCodegen
     - ReactCommon/turbomodule/bridging
     - ReactCommon/turbomodule/core
-    - RNSVG/common (= 15.11.2)
+    - RNSVG/common (= 15.8.0)
     - Yoga
-  - RNSVG/common (15.11.2):
+  - RNSVG/common (15.8.0):
     - DoubleConversion
     - glog
     - hermes-engine
@@ -1885,7 +1885,7 @@ PODS:
     - ReactCommon/turbomodule/core
     - Yoga
   - SocketRocket (0.7.1)
-  - SyneriseSDK (5.0.6)
+  - SyneriseSDK (5.1.0)
   - Yoga (0.0.0)
 
 DEPENDENCIES:
@@ -2177,7 +2177,7 @@ SPEC CHECKSUMS:
   React-microtasksnativemodule: d6ae7d02a66b345794d9d81c038baa7e1931aace
   react-native-mmkv: 36d57903d6b78677f6b7ec90c900df6e43d7d3e4
   react-native-safe-area-context: ee4151c59dc010b5211fe68eca73b0f98d17b224
-  react-native-synerise-sdk: 74513dd8216cd6767477b01a1c5bc0b57484119a
+  react-native-synerise-sdk: 50691532c9bf2f66aa29cb7670928c8dde74243e
   React-nativeconfig: e0b63af9169593319fb5ca10d051c9a803549a5d
   React-NativeModulesApple: cd21a0c2a4d01a6bfcdb837c11e799df68ab6617
   React-perflogger: 3140b7778984a486db80d4d2aeaa266cae4eb8c7
@@ -2211,9 +2211,9 @@ SPEC CHECKSUMS:
   RNGestureHandler: 1e33ee267aaf61bbab6089d32df3b38c3024e3dd
   RNReanimated: a9ee834fa6b3fc14c89d0317f399c42ce16a1b8f
   RNScreens: 38ae4d635c0d0adde928780d0fe7ccca5b395660
-  RNSVG: 1a20ceaeef28cc2e6d74ba0d31fe19a9860f9bda
+  RNSVG: b5087ac7a1b96b793cddb461b0e166e809a114b8
   SocketRocket: d4aabe649be1e368d1318fdf28a022d714d65748
-  SyneriseSDK: 0496b21bcd1cd80620f2bdd299561dff5740e040
+  SyneriseSDK: 9d8ca7c2f5764caaad1ca8b98ee15910af0638d5
   Yoga: 83048fe4b4ce15018a5e9ccbf0b06bd76fc643d4
 
 PODFILE CHECKSUM: 5795b7983d2be9b3c4e46cf70a3c860b17ad6bbe

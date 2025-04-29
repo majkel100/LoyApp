@@ -19,10 +19,10 @@
 #import "RNClient.h"
 #import "RNContent.h"
 #import "RNInjector.h"
-#import "RNNotifications.h"
 #import "RNPromotions.h"
 #import "RNSettings.h"
 #import "RNSynerise.h"
+#import "RNSyneriseNotifications.h"
 #import "RNTracker.h"
 #import "ReactNativeSynerise.h"
 

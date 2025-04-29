@@ -5,6 +5,7 @@ import { useTheme } from '@/theme';
 export interface CustomerData {
   points: string;
   firstName: string;
+  email?: string;
 }
 
 interface CustomerCardProps {
